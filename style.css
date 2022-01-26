@@ -1,0 +1,48 @@
+html,body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: Arial;
+	height: 100%;
+	justify-content: space-around;
+}
+
+.header {
+	color: black;
+	width: 100%;
+	text-align: center;
+	border-bottom: black solid 1px;
+}
+
+.letter {
+	margin: 4px;
+	padding: 10px 5px;
+	font-size: 32px;
+	font-weight: bold;
+	min-width: 32px;
+	text-align: center;
+}
+
+.row {
+	display: flex;
+}
+
+.letter {
+	border: 1px solid black;
+}
+
+.keyboard {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.key {
+	border: 1px solid black;	
+	font-size: 24px;
+	padding: 10px 5px;
+	border-radius: 5px;
+	margin: 4px;
+	text-align: center;
+	min-width: 16px;
+}

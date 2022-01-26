@@ -12,23 +12,28 @@ html,body {
 	width: 100%;
 	text-align: center;
 	border-bottom: black solid 1px;
+	padding: 10px;
+	font-weight: bold;
+	font-size: 48px;
+}
+
+.letterboard {
+	margin: 10px;
 }
 
 .letter {
+	color: white;
 	margin: 4px;
 	padding: 10px 5px;
 	font-size: 32px;
 	font-weight: bold;
 	min-width: 32px;
 	text-align: center;
+	border: 1px solid black;
 }
 
 .row {
 	display: flex;
-}
-
-.letter {
-	border: 1px solid black;
 }
 
 .keyboard {

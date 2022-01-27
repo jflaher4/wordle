@@ -20,6 +20,13 @@ html,body {
 	font-size: 48px;
 }
 
+.options {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .letterboard {
 	margin: 15px;
 }
@@ -37,6 +44,7 @@ html,body {
 
 .row {
 	display: flex;
+	min-height: 60px;
 }
 
 .keyboard {
@@ -52,6 +60,11 @@ html,body {
 	border-radius: 5px;
 	margin: 4px;
 	text-align: center;
-	min-width: 35px;
+	min-width: 37px;
 	background-color: white;
+}
+
+.key:hover {
+	font-weight: bold;
+	border: 2px solid black;
 }

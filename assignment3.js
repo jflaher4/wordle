@@ -25,11 +25,16 @@ function checkboxPressed() {
 	if (color1 === "black") {
 		color1 = "white";
 		color2 = "black";
+		document.getElementById("circleback").style.filter="invert(100%)";
+		document.getElementById("github").style.filter="invert(100%)";
 	} else {
 		color1 = "black";
 		color2 = "white";
+		document.getElementById("circleback").style.filter="invert(0%)";
+		document.getElementById("github").style.filter="invert(0%)";
 	}
 	// Inverts colors of all elements
+		
 	document.body.style.background                            = color2;
 	document.getElementById("title").style.color              = color1;
 	document.getElementById("dark").labels[0].style.color     = color1;
@@ -83,6 +88,7 @@ function eventListen() {
 	});
 	
 	for (let i = 0; i < keyboard.length; i++) {
+		// Listen for click
 		document.getElementsByClassName("key")[i].addEventListener("click",function() {
 			keyPressed(i);
 		});

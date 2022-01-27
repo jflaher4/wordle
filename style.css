@@ -4,7 +4,7 @@ html,body {
 	align-items: center;
 	font-family: Arial;
 	height: 100%;
-	justify-content: space-around;
+	justify-content: center;
 }
 
 .header {
@@ -13,12 +13,15 @@ html,body {
 	text-align: center;
 	border-bottom: black solid 1px;
 	padding: 10px;
+}
+
+#title {
 	font-weight: bold;
 	font-size: 48px;
 }
 
 .letterboard {
-	margin: 10px;
+	margin: 15px;
 }
 
 .letter {

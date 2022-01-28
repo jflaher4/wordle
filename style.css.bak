@@ -37,7 +37,7 @@ html,body {
 	padding: 10px 5px;
 	font-size: 32px;
 	font-weight: bold;
-	min-height: 37px;
+	min-height: 35px;
 	min-width: 42px;
 	text-align: center;
 	border: 1px solid black;

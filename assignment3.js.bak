@@ -102,7 +102,6 @@ function keyPressed(key) {
 	} else if (key === 8 || key === 46) {
 		console.log("delete");
 	}
-	
 }
 
 function keyClicked(i) {

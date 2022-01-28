@@ -37,9 +37,10 @@ html,body {
 	padding: 10px 5px;
 	font-size: 32px;
 	font-weight: bold;
-	min-width: 32px;
+	min-width: 42px;
 	text-align: center;
 	border: 1px solid black;
+	cursor: default;
 }
 
 .row {
@@ -51,9 +52,11 @@ html,body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-width: 475px;
 }
 
 .key {
+	color: black;
 	border: 1px solid black;	
 	font-size: 24px;
 	padding: 10px 5px;
@@ -62,9 +65,18 @@ html,body {
 	text-align: center;
 	min-width: 37px;
 	background-color: white;
+	cursor: pointer;
 }
 
 .key:hover {
 	font-weight: bold;
 	border: 2px solid black;
+}
+
+#dark {
+	cursor: pointer;
+}
+
+#circleback {
+	cursor: pointer;
 }

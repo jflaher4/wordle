@@ -8,6 +8,12 @@ const keyboard = ["Q","W","E","R","T","Y","U","I","O","P","A","S","D",
 
 const URL = 'https://raw.githubusercontent.com/JaneClelandHuang/Paradigms2022/main/data/common-words.txt';
 
+const wordListPromise = fetch(URL)
+						.then(res => res.text())
+						.then(data => obj = data.split('\n'));
+
+eventListen();
+
 function addToBoard(letter) {
 	
 	let square = document.getElementsByClassName("letter")[pos];

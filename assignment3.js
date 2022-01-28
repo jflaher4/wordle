@@ -44,14 +44,14 @@ function darkMode() {
 		color2 = "black";
 		document.getElementById("circleback").style.filter="invert(100%)";
 		document.getElementById("github").style.filter="invert(100%)";
-		document.getElementById("dark").src = "sun.png";
+		document.getElementById("dark").src = "./images/sun.png";
 		document.getElementById("dark").style.filter = "invert(100%)";
 	} else {
 		color1 = "black";
 		color2 = "white";
 		document.getElementById("circleback").style.filter="invert(0%)";
 		document.getElementById("github").style.filter="invert(0%)";
-		document.getElementById("dark").src = "moon.png";
+		document.getElementById("dark").src = "./images/moon.png";
 		document.getElementById("dark").style.filter = "invert(0%)";
 	}
 	// Inverts colors of all elements

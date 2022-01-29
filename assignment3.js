@@ -67,7 +67,9 @@ function enterGuess(userGuess) {
 						square.style.backgroundColor = "gold";   // change color to gray
 						square.style.color = color2;
 						square.style.borderColor = color2;
-						key.style.backgroundColor = "gold";
+						if (key.style.backgroundColor !== "green") {
+							key.style.backgroundColor = "gold";
+						}
 						key.style.color = color2;
 						key.style.borderColor = color2;
 					} else {
@@ -154,6 +156,11 @@ function darkMode() {
 			square.style.borderColor = color1;
 		} else {
 			square.style.borderColor = color2;
+		}
+		if (square.style.backgroundColor === color2) {
+			square.style.backgroundColor = color1;
+		} else if (square.style.backgroundColor === color1){
+			square.style.backgroundColor = color2;
 		}
 	}
 	// Inverts keyboard colors

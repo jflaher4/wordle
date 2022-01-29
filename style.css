@@ -71,7 +71,7 @@ html,body {
 
 .key:hover {
 	font-weight: bold!important;
-	border: 2px solid!important;
+	border: 2px solids!important;
 }
 
 #dark, #circleback, #help, #friends {

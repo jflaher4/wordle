@@ -21,6 +21,7 @@ const wordListPromise = fetch(URL)
 let randomWordPromise = wordListPromise.then(data => {
 	let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
 	console.log(data[randomWordIndex]);
+	return data[randomWordIndex];
 });
 
 // Most important function call => listens for clicks and key presses
@@ -49,6 +50,26 @@ function enterGuess(userGuess) {
 	let included = wordListPromise.then(data => data.includes(userGuess.toLowerCase()));
 	included.then(data => {
 		if(data) {
+			randomWordPromise.then(correctString => {
+				for(let i = pos - 5; i < pos; i++) {
+					let square = document.getElementsByClassName("letter")[i];
+					if(correctString.charAt((i - 15) % 5) == square.textContent.toLowerCase()) {   // correct postion
+						square.style.backgroundColor = "green";   // change color to gray
+						square.style.color = color2;
+						square.style.borderColor = color2;
+
+					} else if(correctString.indexOf(square.textContent.toLowerCase()) >= 0) {   // in word, incorrect position
+						square.style.backgroundColor = "gold";   // change color to gray
+						square.style.color = color2;
+						square.style.borderColor = color2;
+
+					} else {
+						square.style.backgroundColor = "gray";   // change color to gray
+						square.style.color = color2;
+						square.style.borderColor = color2;
+					}
+				}
+			});
 			minPos += 5;
 			maxPos += 5;
 		} else {

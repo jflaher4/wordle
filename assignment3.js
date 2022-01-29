@@ -1,7 +1,8 @@
 // Use pos to keep track of which square is next to be filled
 // Starts at 15, because we use letter class in help page as well
 let pos = 15;
-let wordPos = 0;  // tracks which word (row) user is working on
+let minPos = pos;  // Tracks how far back the user can delete
+let maxPos = pos + 5; // Tracks how far the user can type
 // Starting colors
 let color1 = "black";
 let color2 = "white";
@@ -26,22 +27,34 @@ let randomWordPromise = wordListPromise.then(data => {
 eventListen();
 
 function addToBoard(letter) {
-	let square = document.getElementsByClassName("letter")[pos];
-	square.textContent = letter;
-	square.style.color = color1;
-	pos++;
+	if (pos < maxPos) {
+		let square = document.getElementsByClassName("letter")[pos];
+		square.textContent = letter;
+		square.style.color = color1;
+		pos++;
+	}
 }
 
 function deleteFromBoard() {
-	pos--;
+	if (pos > minPos) {
+		pos--;
+	}
 	let square = document.getElementsByClassName("letter")[pos];
 	square.textContent = "";
 	square.style.color = color2;
 }
 
 function enterGuess() {
+	if (wordLegit()) {
+		minPos += 5;
+		maxPos += 5;
+	} else {
+		
+	}
+}
 
-
+function wordLegit() {
+	return true;
 }
 
 function clearBoard() {
@@ -132,7 +145,7 @@ function keyPressed(key) {
 		let keyIndex = keyboard.findIndex((x) => x === letter);
 		keyPressedStyle(keyIndex);
 	} else if (key === 13) { //Enter
-		console.log("enter");
+		enterGuess();
 		keyPressedStyle(19);
 	} else if (key === 8 || key === 46) { //Delete or Backspace
 		deleteFromBoard();

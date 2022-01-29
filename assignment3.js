@@ -50,6 +50,7 @@ function enterGuess(userGuess) {
 	let included = wordListPromise.then(data => data.includes(userGuess.toLowerCase()));
 	included.then(data => {
 		if(data) {
+			let numCorrectLetters = 0;
 			randomWordPromise.then(correctString => {
 				for(let i = pos - 5; i < pos; i++) {
 					let square = document.getElementsByClassName("letter")[i];
@@ -57,7 +58,7 @@ function enterGuess(userGuess) {
 						square.style.backgroundColor = "green";   // change color to gray
 						square.style.color = color2;
 						square.style.borderColor = color2;
-
+						numCorrectLetters++;
 					} else if(correctString.indexOf(square.textContent.toLowerCase()) >= 0) {   // in word, incorrect position
 						square.style.backgroundColor = "gold";   // change color to gray
 						square.style.color = color2;
@@ -68,6 +69,9 @@ function enterGuess(userGuess) {
 						square.style.color = color2;
 						square.style.borderColor = color2;
 					}
+				}
+				if(numCorrectLetters == 5) {     // if all 5 letters are green, player wins
+					console.log("YOU WIN!!!!!!");
 				}
 			});
 			minPos += 5;

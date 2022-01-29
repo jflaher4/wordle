@@ -54,20 +54,29 @@ function enterGuess(userGuess) {
 			randomWordPromise.then(correctString => {
 				for(let i = pos - 5; i < pos; i++) {
 					let square = document.getElementsByClassName("letter")[i];
+					let key = document.getElementsByClassName("key")[keyboard.indexOf(square.textContent)];
 					if(correctString.charAt((i - 15) % 5) == square.textContent.toLowerCase()) {   // correct postion
 						square.style.backgroundColor = "green";   // change color to gray
 						square.style.color = color2;
 						square.style.borderColor = color2;
 						numCorrectLetters++;
+						key.style.backgroundColor = "green";
+						key.style.color = color2;
+						key.style.borderColor = color2;
 					} else if(correctString.indexOf(square.textContent.toLowerCase()) >= 0) {   // in word, incorrect position
 						square.style.backgroundColor = "gold";   // change color to gray
 						square.style.color = color2;
 						square.style.borderColor = color2;
-
+						key.style.backgroundColor = "gold";
+						key.style.color = color2;
+						key.style.borderColor = color2;
 					} else {
 						square.style.backgroundColor = "gray";   // change color to gray
 						square.style.color = color2;
 						square.style.borderColor = color2;
+						key.style.backgroundColor = "gray";
+						key.style.color = color2;
+						key.style.borderColor = color2;
 					}
 				}
 				if(numCorrectLetters == 5) {     // if all 5 letters are green, player wins
@@ -77,7 +86,7 @@ function enterGuess(userGuess) {
 			minPos += 5;
 			maxPos += 5;
 		} else {
-			console.log("bad word");
+			console.log("Invalid word");
 		}
 	});
 }
@@ -86,8 +95,18 @@ function clearBoard() {
 	let squares = document.getElementsByClassName("letter");
 	for (let i = 15; i < 45; i++) {
 		squares[i].textContent = "";
+		squares[i].style.backgroundColor = color2;
+		squares[i].style.borderColor = color1;
+	}
+	let keys = document.getElementsByClassName("key");
+	for (let i = 0; i < keyboard.length; i++) {
+		keys[i].style.backgroundColor = color2;
+		keys[i].style.borderColor = color1;
+		keys[i].style.color = color1;
 	}
 	pos = 15;
+	minPos = pos;
+	maxPos = pos + 5;
 }
 
 function openHelpScreen() {

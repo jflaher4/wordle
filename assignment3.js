@@ -1,5 +1,6 @@
 // Use pos to keep track of which square is next to be filled
-let pos = 0;
+// Starts at 15, because we use letter class in help page as well 
+let pos = 15;
 // Starting colors
 let color1 = "black";
 let color2 = "white";
@@ -10,56 +11,69 @@ const keyboard = ["Q","W","E","R","T","Y","U","I","O","P","A","S","D",
 // URL for the word list
 const URL = 'https://raw.githubusercontent.com/JaneClelandHuang/Paradigms2022/main/data/common-words.txt';
 
-// Promise bullshit datastructure
+// Promise data structure
 const wordListPromise = fetch(URL)
 						.then(res => res.text())
 						.then(data => obj = data.split('\n'));
 
 let randomWordPromise = wordListPromise.then(data => {
-	let randomWordIndex = Math.floor(Math.random()*data.length);
+	let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
 	console.log(data[randomWordIndex]);
 });
 
 // Most important function call => listens for clicks and key presses
 eventListen();
 
-function addToBoard(letter) {
-	
+function addToBoard(letter) {	
 	let square = document.getElementsByClassName("letter")[pos];
 	square.textContent = letter;
 	square.style.color = color1;
 	pos++;
-
 }
 
 function clearBoard() {
-	console.log("clear");
+	let squares = document.getElementsByClassName("letter");
+	for (let i = 15; i < 45; i++) {
+		squares[i].textContent = "";
+	}
+	pos = 15;
+}
+
+function openHelpScreen() {
+	document.getElementById("helpScreen").style.height = "100%";
+}
+
+function closeHelpScreen() {
+	document.getElementById("helpScreen").style.height = "0%";
 }
 
 function darkMode() {
-	
 	// Swicthes color variables and inverts handles images
 	if (color1 === "black") {
 		color1 = "white";
 		color2 = "black";
 		document.getElementById("circleback").style.filter="invert(100%)";
-		document.getElementById("github").style.filter="invert(100%)";
+		document.getElementById("help").style.filter = "invert(100%)";
 		document.getElementById("dark").src = "./images/sun.png";
 		document.getElementById("dark").style.filter = "invert(100%)";
+		document.getElementById("friends").style.filter = "invert(100%)";
+		document.getElementById("github").style.filter="invert(100%)";			
 	} else {
 		color1 = "black";
 		color2 = "white";
 		document.getElementById("circleback").style.filter="invert(0%)";
-		document.getElementById("github").style.filter="invert(0%)";
+		document.getElementById("help").style.filter = "invert(0%)";
 		document.getElementById("dark").src = "./images/moon.png";
 		document.getElementById("dark").style.filter = "invert(0%)";
+		document.getElementById("friends").style.filter = "invert(0%)";
+		document.getElementById("github").style.filter="invert(0%)";	
 	}
 	// Inverts colors of all elements
 	document.body.style.background                            = color2;
 	document.getElementById("title").style.color              = color1;
 	document.getElementById("header").style.borderBottomColor = color1;	
 	// Inverts colors of guessing board
-	for (let i = 0; i < 30; i++) {
+	for (let i = 0; i < 45; i++) {
 		let square = document.getElementsByClassName("letter")[i];
 		if (square.style.color === color1 || square.style.color === "") {
 			square.style.color = color2;
@@ -89,20 +103,41 @@ function darkMode() {
 			key.style.backgroundColor = color2;
 		}
 	}	
+	// Inverts text on help page
+	document.getElementById('howtoplay').style.color = color1;
+	document.getElementById('helpScreen').style.backgroundColor = 'rgba(0,0,0,1)';
+	
 	
 }
 
 function keyPressed(key) {
 
 	// Handles key events based on what key was pressed
-	if ((97 <= key && key <= 122) || (65 <= key && key <= 90)){
-		addToBoard(String.fromCharCode(key).toUpperCase());
-	} else if (key === 13) {
+	if ((97 <= key && key <= 122) || (65 <= key && key <= 90)){ //a to z or A to Z
+		let letter = String.fromCharCode(key).toUpperCase();
+		addToBoard(letter);	
+		let keyIndex = keyboard.findIndex((x) => x === letter);
+		keyPressedStyle(keyIndex);
+	} else if (key === 13) { //Enter
 		console.log("enter");
-	} else if (key === 8 || key === 46) {
+		keyPressedStyle(19);
+	} else if (key === 8 || key === 46) { //Delete or Backspace
 		console.log("delete");
+		keyPressedStyle(27);
+	} else if (key === 27) { //Esc
+		closeHelpScreen();
 	}
 	
+}
+
+function keyPressedStyle(keyIndex) {
+	let key = document.getElementsByClassName("key")[keyIndex]
+	key.style.fontWeight = "bold";
+	key.style.borderWidth = "2px"
+	setTimeout(function() {
+		key.style.fontWeight = "normal";
+		key.style.borderWidth = "1px";
+	},250);
 }
 
 function keyClicked(i) {

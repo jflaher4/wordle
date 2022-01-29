@@ -44,18 +44,16 @@ function deleteFromBoard() {
 	square.style.color = color2;
 }
 
-function enterGuess() {
-	if (wordLegit()) {
+function enterGuess(userGuess) {
+	console.log(userGuess);
+	if (true) {
 		minPos += 5;
 		maxPos += 5;
 	} else {
-		
+
 	}
 }
 
-function wordLegit() {
-	return true;
-}
 
 function clearBoard() {
 	let squares = document.getElementsByClassName("letter");
@@ -136,6 +134,14 @@ function darkMode() {
 
 }
 
+function createString() {
+	let userGuess = "";
+	for(let i = pos - 5; i < pos; i++) {
+		userGuess += document.getElementsByClassName("letter")[i].textContent;
+	}
+	return userGuess;
+}
+
 function keyPressed(key) {
 
 	// Handles key events based on what key was pressed
@@ -144,8 +150,8 @@ function keyPressed(key) {
 		addToBoard(letter);
 		let keyIndex = keyboard.findIndex((x) => x === letter);
 		keyPressedStyle(keyIndex);
-	} else if (key === 13) { //Enter
-		enterGuess();
+	} else if (key === 13 && (pos % 5 == 0) && (pos > 15)) { //Enter
+		enterGuess(createString());
 		keyPressedStyle(19);
 	} else if (key === 8 || key === 46) { //Delete or Backspace
 		deleteFromBoard();
@@ -173,7 +179,7 @@ function keyClicked(i) {
 	} else if (i == 27 && pos > 15) {
 		deleteFromBoard();
 	}	else if (i == 19 && (pos % 5 == 0) && (pos > 15)) {  // ">15" makes sure pos is not at initial square
-		enterGuess();
+		enterGuess(createString());
 	}
 
 }

@@ -1,6 +1,7 @@
 // Use pos to keep track of which square is next to be filled
-// Starts at 15, because we use letter class in help page as well 
+// Starts at 15, because we use letter class in help page as well
 let pos = 15;
+let wordPos = 0;  // tracks which word (row) user is working on
 // Starting colors
 let color1 = "black";
 let color2 = "white";
@@ -24,11 +25,23 @@ let randomWordPromise = wordListPromise.then(data => {
 // Most important function call => listens for clicks and key presses
 eventListen();
 
-function addToBoard(letter) {	
+function addToBoard(letter) {
 	let square = document.getElementsByClassName("letter")[pos];
 	square.textContent = letter;
 	square.style.color = color1;
 	pos++;
+}
+
+function deleteFromBoard() {
+	pos--;
+	let square = document.getElementsByClassName("letter")[pos];
+	square.textContent = "";
+	square.style.color = color2;
+}
+
+function enterGuess() {
+
+
 }
 
 function clearBoard() {
@@ -57,7 +70,7 @@ function darkMode() {
 		document.getElementById("dark").src = "./images/sun.png";
 		document.getElementById("dark").style.filter = "invert(100%)";
 		document.getElementById("friends").style.filter = "invert(100%)";
-		document.getElementById("github").style.filter="invert(100%)";			
+		document.getElementById("github").style.filter="invert(100%)";
 	} else {
 		color1 = "black";
 		color2 = "white";
@@ -66,12 +79,12 @@ function darkMode() {
 		document.getElementById("dark").src = "./images/moon.png";
 		document.getElementById("dark").style.filter = "invert(0%)";
 		document.getElementById("friends").style.filter = "invert(0%)";
-		document.getElementById("github").style.filter="invert(0%)";	
+		document.getElementById("github").style.filter="invert(0%)";
 	}
 	// Inverts colors of all elements
 	document.body.style.background                            = color2;
 	document.getElementById("title").style.color              = color1;
-	document.getElementById("header").style.borderBottomColor = color1;	
+	document.getElementById("header").style.borderBottomColor = color1;
 	// Inverts colors of guessing board
 	for (let i = 0; i < 45; i++) {
 		let square = document.getElementsByClassName("letter")[i];
@@ -102,12 +115,12 @@ function darkMode() {
 		} else if (key.style.backgroundColor === color2) {
 			key.style.backgroundColor = color2;
 		}
-	}	
+	}
 	// Inverts text on help page
 	document.getElementById('howtoplay').style.color = color1;
 	document.getElementById('helpScreen').style.backgroundColor = 'rgba(0,0,0,1)';
-	
-	
+
+
 }
 
 function keyPressed(key) {
@@ -115,19 +128,19 @@ function keyPressed(key) {
 	// Handles key events based on what key was pressed
 	if ((97 <= key && key <= 122) || (65 <= key && key <= 90)){ //a to z or A to Z
 		let letter = String.fromCharCode(key).toUpperCase();
-		addToBoard(letter);	
+		addToBoard(letter);
 		let keyIndex = keyboard.findIndex((x) => x === letter);
 		keyPressedStyle(keyIndex);
 	} else if (key === 13) { //Enter
 		console.log("enter");
 		keyPressedStyle(19);
 	} else if (key === 8 || key === 46) { //Delete or Backspace
-		console.log("delete");
+		deleteFromBoard();
 		keyPressedStyle(27);
 	} else if (key === 27) { //Esc
 		closeHelpScreen();
 	}
-	
+
 }
 
 function keyPressedStyle(keyIndex) {
@@ -141,15 +154,21 @@ function keyPressedStyle(keyIndex) {
 }
 
 function keyClicked(i) {
-	
-	if (i !== 19 && i !== 27) {
-		addToBoard(keyboard[i])
+
+	if (i !== 19 && i !== 27) {   // 19 is submit and 27 is delete
+		addToBoard(keyboard[i]);
+	} else if (i == 27 && pos > 15) {
+		deleteFromBoard();
+	}	else if (i == 19 && (pos % 5 == 0) && (pos > 15)) {  // ">15" makes sure pos is not at initial square
+		enterGuess();
 	}
-	
+
 }
 
+
+
 function eventListen() {
-	
+
 	// Need to use onkeydown instead of keypress to handle backspaces and deletes
 	document.onkeydown = function(e) {
 		if (e.keyCode == 82 && e.ctrlKey) { // Doesn't print R in a box on Ctrl+R
@@ -160,11 +179,10 @@ function eventListen() {
 	};
 	// Loops through keyboard buttons
 	for (let i = 0; i < keyboard.length; i++) {
-		// Listen for click 
+		// Listen for click
 		document.getElementsByClassName("key")[i].addEventListener("click",function() {
 			keyClicked(i);
 		});
 	}
-	
-}
 
+}

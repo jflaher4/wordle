@@ -45,15 +45,17 @@ function deleteFromBoard() {
 }
 
 function enterGuess(userGuess) {
-	console.log(userGuess);
-	if (true) {
-		minPos += 5;
-		maxPos += 5;
-	} else {
 
-	}
+	let included = wordListPromise.then(data => data.includes(userGuess.toLowerCase()));
+	included.then(data => {
+		if(data) {
+			minPos += 5;
+			maxPos += 5;
+		} else {
+			console.log("bad word");
+		}
+	});
 }
-
 
 function clearBoard() {
 	let squares = document.getElementsByClassName("letter");
@@ -183,8 +185,6 @@ function keyClicked(i) {
 	}
 
 }
-
-
 
 function eventListen() {
 

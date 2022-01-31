@@ -71,7 +71,7 @@ html,body {
 
 .key:hover {
 	font-weight: bold!important;
-	border: 2px solids!important;
+	border: 2px solid!important;
 }
 
 #dark, #circleback, #help, #friends {
@@ -84,7 +84,8 @@ html,body {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background-color: rgba(255,255,255,1);
+	z-index: 1;
+	background-color: rgba(255,255,255);
 	overflow-y: hidden;
 	transition: 0.5s;
 }
@@ -93,10 +94,19 @@ html,body {
 	margin: auto;
 	margin-top: 20px;
 	max-width: 475px;
-	
+	display: flex;
+	flex-direction: column;
 }
 
 #howtoplay {
+	font-size: 32px;
+	font-weight: bold;
+	display: flex;
+	justify-content: space-between;
+	min-height: 40px;
+}
+
+#friendTitle {
 	font-size: 32px;
 	font-weight: bold;
 	display: flex;
@@ -127,6 +137,6 @@ p {
 }
 
 .closebtn:hover {
-	font-weight: bold;
-	border: 2px solid;
+	font-weight: bold!important;
+	border: 2px solid!important;
 }

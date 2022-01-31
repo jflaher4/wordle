@@ -3,6 +3,7 @@
 let pos = 15;
 let minPos = pos;  // Tracks how far back the user can delete
 let maxPos = pos + 5; // Tracks how far the user can type
+let gameWon = false; // Allows the player to play until they've won
 // Starting colors
 let color1 = "black";
 let color2 = "white";
@@ -12,23 +13,21 @@ const keyboard = ["Q","W","E","R","T","Y","U","I","O","P","A","S","D",
 					"N","M","Del"]
 // URL for the word list
 const URL = 'https://raw.githubusercontent.com/JaneClelandHuang/Paradigms2022/main/data/common-words.txt';
-
-// Promise data structure
+// Promise data structure for list
 const wordListPromise = fetch(URL)
 						.then(res => res.text())
 						.then(data => obj = data.split('\n'));
-
+// Promise data structure for correct word
 let randomWordPromise = wordListPromise.then(data => {
 	let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
 	console.log(data[randomWordIndex]);
 	return data[randomWordIndex];
 });
-
 // Most important function call => listens for clicks and key presses
 eventListen();
 
 function addToBoard(letter) {
-	if (pos < maxPos) {
+	if (pos < maxPos && !gameWon) {
 		let square = document.getElementsByClassName("letter")[pos];
 		square.textContent = letter;
 		square.style.color = color1;
@@ -49,14 +48,14 @@ function enterGuess(userGuess) {
 
 	let included = wordListPromise.then(data => data.includes(userGuess.toLowerCase()));
 	included.then(data => {
-		if(data) {
+		if(data && pos > minPos) {
 			let numCorrectLetters = 0;
 			randomWordPromise.then(correctString => {
 				for(let i = pos - 5; i < pos; i++) {
 					let square = document.getElementsByClassName("letter")[i];
 					let key = document.getElementsByClassName("key")[keyboard.indexOf(square.textContent)];
 					if(correctString.charAt((i - 15) % 5) == square.textContent.toLowerCase()) {   // correct postion
-						square.style.backgroundColor = "green";   // change color to gray
+						square.style.backgroundColor = "green";   // Change colors to green
 						square.style.color = color2;
 						square.style.borderColor = color2;
 						numCorrectLetters++;
@@ -64,16 +63,16 @@ function enterGuess(userGuess) {
 						key.style.color = color2;
 						key.style.borderColor = color2;
 					} else if(correctString.indexOf(square.textContent.toLowerCase()) >= 0) {   // in word, incorrect position
-						square.style.backgroundColor = "gold";   // change color to gray
+						square.style.backgroundColor = "gold";   // Change colors to gold
 						square.style.color = color2;
 						square.style.borderColor = color2;
-						if (key.style.backgroundColor !== "green") {
+						if (key.style.backgroundColor !== "green") { // Sets color priority
 							key.style.backgroundColor = "gold";
 						}
 						key.style.color = color2;
 						key.style.borderColor = color2;
 					} else {
-						square.style.backgroundColor = "gray";   // change color to gray
+						square.style.backgroundColor = "gray";   // Change colors to gray
 						square.style.color = color2;
 						square.style.borderColor = color2;
 						key.style.backgroundColor = "gray";
@@ -81,10 +80,12 @@ function enterGuess(userGuess) {
 						key.style.borderColor = color2;
 					}
 				}
-				if(numCorrectLetters == 5) {     // if all 5 letters are green, player wins
+				if(numCorrectLetters == 5) {     // If all 5 letters are green, player wins
 					console.log("YOU WIN!!!!!!");
+					gameWon = true;
 				}
 			});
+			// Updates the typing boundaries
 			minPos += 5;
 			maxPos += 5;
 		} else {
@@ -109,6 +110,12 @@ function clearBoard() {
 	pos = 15;
 	minPos = pos;
 	maxPos = pos + 5;
+	gameWon = false;
+	randomWordPromise = wordListPromise.then(data => {
+		let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
+		console.log(data[randomWordIndex]);
+		return data[randomWordIndex];
+	});
 }
 
 function openHelpScreen() {
@@ -203,8 +210,10 @@ function keyPressed(key) {
 		addToBoard(letter);
 		let keyIndex = keyboard.findIndex((x) => x === letter);
 		keyPressedStyle(keyIndex);
-	} else if (key === 13 && (pos % 5 == 0) && (pos > 15)) { //Enter
-		enterGuess(createString());
+	} else if (key === 13) { //Enter
+		if ((pos % 5 == 0) && (pos > 15)) {
+			enterGuess(createString());
+		}
 		keyPressedStyle(19);
 	} else if (key === 8 || key === 46) { //Delete or Backspace
 		deleteFromBoard();
@@ -216,7 +225,9 @@ function keyPressed(key) {
 }
 
 function keyPressedStyle(keyIndex) {
+	
 	let key = document.getElementsByClassName("key")[keyIndex]
+	// Manually create a key pressed animation using setTimeout
 	key.style.fontWeight = "bold";
 	key.style.borderWidth = "2px"
 	setTimeout(function() {
@@ -229,9 +240,9 @@ function keyClicked(i) {
 
 	if (i !== 19 && i !== 27) {   // 19 is submit and 27 is delete
 		addToBoard(keyboard[i]);
-	} else if (i == 27 && pos > 15) {
+	} else if (i === 27 && pos > 15) {
 		deleteFromBoard();
-	}	else if (i == 19 && (pos % 5 == 0) && (pos > 15)) {  // ">15" makes sure pos is not at initial square
+	} else if (i === 19 && (pos % 5 == 0) && (pos > 15)) {  // ">15" makes sure pos is not at initial square
 		enterGuess(createString());
 	}
 

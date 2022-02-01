@@ -1,10 +1,10 @@
 // Use pos to keep track of which square is next to be filled
 // Starts at 20, because we use letter class in help page as well
-let pos = 20;
-let minPos = pos;  // Tracks how far back the user can delete
-let maxPos = pos + 5; // Tracks how far the user can type
-let gameWon = false; // Allows the player to play until they've won
-let friendPos = 15;
+let pos       = 20;
+let minPos    = pos;     // Tracks how far back the user can delete
+let maxPos    = pos + 5; // Tracks how far the user can type
+let gameWon   = false;   // Allows the player to play until they've won
+let friendPos = 15;      // Tracks cursor on friend screen
 // Starting colors
 let color1 = "black";
 let color2 = "white";
@@ -12,20 +12,33 @@ let color2 = "white";
 const keyboard = ["Q","W","E","R","T","Y","U","I","O","P","A","S","D",
 					"F","G","H","J","K","L","Submit","Z","X","C","V","B",
 					"N","M","Del"]
-// URL for the word list
-const URL  = 'https://raw.githubusercontent.com/JaneClelandHuang/Paradigms2022/main/data/common-words.txt';
-// Promise data structure for list
-const wordListPromise = fetch(URL)
-						.then(res => res.text())
-						.then(data => obj = data.split('\n'));
-// Promise data structure for correct word
-let randomWordPromise = wordListPromise.then(data => {
-	let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
-	console.log(data[randomWordIndex]);
-	return data[randomWordIndex];
-});
+// Reads in text file from Paradigms GitHub and makes a list
+URL = 'https://raw.githubusercontent.com/JaneClelandHuang/Paradigms2022/main/data/five-letter-words.txt';
+const wordListRaw = fetch(URL)
+						 .then(res => res.text())
+						 .then(data => data.split('\n'));
+// We will be using this as the valid words that a user can guess or pick for their friends
+const wordListPromise = wordListRaw.then(data => data.map(function(word) {
+	if(word.charAt(0) === "*") {
+		return word.substring(1);
+	} else {
+		return word;
+	}
+}));
+// We will use this as a list of common words that the computer can randomly pick					 
+let randomWordPromise = getRandomWord(wordListRaw);
 // Most important function call => listens for clicks and key presses
 eventListen();
+
+function getRandomWord(promise) {
+	return promise.then(data => data.filter(x => x.charAt(0) === "*").map(x => x.substring(1)))
+		     		.then(data => {
+						let randomWordIndex = Math.floor(Math.random()*(data.length));
+						console.clear();
+						console.log(data[randomWordIndex]);
+						return data[randomWordIndex];
+					});
+}
 
 function addToBoard(letter) {
 	if (pos < maxPos && !gameWon) {
@@ -46,7 +59,7 @@ function deleteFromBoard() {
 }
 
 function enterGuess(userGuess) {
-	let included = wordListPromise.then(data => data.includes(userGuess.toLowerCase()));
+	let included = wordListPromise.then(data => data.includes(userGuess));
 	included.then(data => {
 		if(data && pos > minPos) {
 			randomWordPromise.then(correctString => {
@@ -54,7 +67,7 @@ function enterGuess(userGuess) {
 				for(let i = pos - 5; i < pos; i++) {
 					let square = document.getElementsByClassName("letter")[i];
 					let key = document.getElementsByClassName("key")[keyboard.indexOf(square.textContent) + 28];
-					if(correctString.charAt((i - 20) % 5) == square.textContent.toLowerCase()) {   // correct postion
+					if(correctString.charAt((i - 20) % 5) == square.textContent) {   // correct postion
 						square.style.backgroundColor = "green";   // Change colors to green
 						square.style.color = color2;
 						square.style.borderColor = color2;
@@ -62,7 +75,7 @@ function enterGuess(userGuess) {
 						key.style.backgroundColor = "green";
 						key.style.color = color2;
 						key.style.borderColor = color2;
-					} else if(correctString.indexOf(square.textContent.toLowerCase()) >= 0) {   // in word, incorrect position
+					} else if(correctString.indexOf(square.textContent) >= 0) {   // in word, incorrect position
 						square.style.backgroundColor = "gold";   // Change colors to gold
 						square.style.color = color2;
 						square.style.borderColor = color2;
@@ -384,20 +397,17 @@ function clearFriendWord() {
 
 function submitFriendWord(word) {
 	let friendWordPromise = wordListPromise.then(data => {
-		if(data.includes(word.toLowerCase())) {
+		if(data.includes(word)) {
 			clearBoard();
 			friendPos = 15;
 			closeFriendGuess();
 			console.clear();
-			console.log(word.toLowerCase());
-			return word.toLowerCase();
+			console.log(word);
+			return word;
 		} else {
 			invalidWordStyle(friendPos);
 			clearBoard();
-			randomWordIndex = Math.floor(Math.random()*(data.length - 1));
-			console.clear();
-			console.log(data[randomWordIndex]);
-			return data[randomWordIndex];
+			return getRandomWord(wordListRaw);
 		}
 	});
 	return friendWordPromise;

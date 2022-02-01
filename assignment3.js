@@ -5,7 +5,6 @@ let minPos = pos;  // Tracks how far back the user can delete
 let maxPos = pos + 5; // Tracks how far the user can type
 let gameWon = false; // Allows the player to play until they've won
 let friendPos = 15;
-let wordToGuess = ""; //For the friend feature
 // Starting colors
 let color1 = "black";
 let color2 = "white";
@@ -50,8 +49,8 @@ function enterGuess(userGuess) {
 	let included = wordListPromise.then(data => data.includes(userGuess.toLowerCase()));
 	included.then(data => {
 		if(data && pos > minPos) {
-			let numCorrectLetters = 0;
 			randomWordPromise.then(correctString => {
+				let numCorrectLetters = 0;
 				for(let i = pos - 5; i < pos; i++) {
 					let square = document.getElementsByClassName("letter")[i];
 					let key = document.getElementsByClassName("key")[keyboard.indexOf(square.textContent) + 28];
@@ -81,8 +80,12 @@ function enterGuess(userGuess) {
 						key.style.borderColor = color2;
 					}
 				}
+				console.log(pos);
 				if(numCorrectLetters == 5) {     // If all 5 letters are green, player wins
-					console.log("YOU WIN!!!!!!");
+					winStyle((pos-20)/5);
+					gameWon = true;
+				} else if (pos === 50) {
+					loseStyle();
 					gameWon = true;
 				}
 			});
@@ -90,10 +93,37 @@ function enterGuess(userGuess) {
 			minPos += 5;
 			maxPos += 5;
 		} else {
-			console.log("Invalid word");
 			invalidWordStyle(pos);
 		}
 	});
+}
+
+function loseStyle() {
+	let messageBox = document.getElementById("alert");
+	messageBox.style.backgroundColor = "red";
+	messageBox.style.opacity = 1;
+	messageBox.textContent = "YOU LOST.\r\nTry again";
+	messageBox.style.color = color2;
+	messageBox.style.fontWeight = "bold";
+	messageBox.style.fontSize = "24px";
+	messageBox.style.padding = "8px 0";
+	messageBox.style.borderColor = "white";
+}
+
+function winStyle(n) {
+	let messageBox = document.getElementById("alert");
+	messageBox.style.backgroundColor = "navy";
+	messageBox.style.opacity = 1;
+	if (n === 1) {
+		messageBox.textContent = `YOU WON\r\nin ${n} guess`;
+	} else {
+		messageBox.textContent = `YOU WON\r\nin ${n} guesses`;
+	}
+	messageBox.style.color = "white";
+	messageBox.style.fontWeight = "bold";
+	messageBox.style.fontSize = "24px";
+	messageBox.style.padding = "8px 0";
+	messageBox.style.borderColor = "white";
 }
 
 function invalidWordStyle(pos) {
@@ -101,11 +131,21 @@ function invalidWordStyle(pos) {
 	for(let i = pos - 5; i < pos; i++) {
 		squares[i].style.borderWidth = "2px"
 	}
+	let messageBox = document.getElementById("alert");
+	messageBox.style.backgroundColor = "red";
+	messageBox.style.opacity = 1;
+	messageBox.textContent = "INVALID WORD";
+	messageBox.style.color = color2;
+	messageBox.style.fontWeight = "bold";
+	messageBox.style.fontSize = "24px";
 	setTimeout(function() {
 		for(let i = pos - 5; i < pos; i++) {
 			squares[i].style.borderWidth = "1px"
 		}
-	},250);
+	},100);
+	setTimeout(function() {
+		messageBox.style.opacity = 0;
+	},1000);
 }
 
 function restartGame() {
@@ -134,6 +174,7 @@ function clearBoard() {
 	minPos = pos;
 	maxPos = pos + 5;
 	gameWon = false;
+	document.getElementById("alert").style.opacity ="0";
 }
 
 function openHelpScreen() {

@@ -140,3 +140,23 @@ p {
 	font-weight: bold!important;
 	border: 2px solid!important;
 }
+
+#alert {
+	position: absolute;
+	display: flex;
+	text-align: center;
+	align-items: center;
+	justify-content: center;
+	min-width: 220px;
+	min-height: 40px;
+	max-width: 220px;
+	top: 43%;
+	left: 50%;
+	z-index: 1;
+	margin-top: -20px;
+	margin-left: -110px;
+	background-color: red;
+	opacity: 0;
+	border-radius: 10px;
+	white-space: pre;
+}

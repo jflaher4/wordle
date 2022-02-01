@@ -80,7 +80,6 @@ function enterGuess(userGuess) {
 						key.style.borderColor = color2;
 					}
 				}
-				console.log(pos);
 				if(numCorrectLetters == 5) {     // If all 5 letters are green, player wins
 					winStyle((pos-20)/5);
 					gameWon = true;
@@ -99,21 +98,26 @@ function enterGuess(userGuess) {
 }
 
 function loseStyle() {
-	let messageBox = document.getElementById("alert");
+	// Displays the message box when a player goes 6 guesses without guessing the word
+	let messageBox = document.getElementsByClassName("alert")[1];
 	messageBox.style.backgroundColor = "red";
-	messageBox.style.opacity = 1;
-	messageBox.textContent = "YOU LOST.\r\nTry again";
+	messageBox.style.opacity = "1";
+	randomWordPromise.then(data => {
+		messageBox.textContent = `YOU LOST.\r\nTry again.\r\nCorrect Word:\r\n${data.toUpperCase()}`;
+	})
 	messageBox.style.color = color2;
 	messageBox.style.fontWeight = "bold";
 	messageBox.style.fontSize = "24px";
 	messageBox.style.padding = "8px 0";
 	messageBox.style.borderColor = "white";
+	messageBox.style.zIndex = "1";
 }
 
 function winStyle(n) {
-	let messageBox = document.getElementById("alert");
+	// Displays the message box when a player guesses the word correctly
+	let messageBox = document.getElementsByClassName("alert")[1];
 	messageBox.style.backgroundColor = "navy";
-	messageBox.style.opacity = 1;
+	messageBox.style.opacity = "1";
 	if (n === 1) {
 		messageBox.textContent = `YOU WON\r\nin ${n} guess`;
 	} else {
@@ -124,34 +128,43 @@ function winStyle(n) {
 	messageBox.style.fontSize = "24px";
 	messageBox.style.padding = "8px 0";
 	messageBox.style.borderColor = "white";
+	messageBox.style.zIndex = "1";
 }
 
 function invalidWordStyle(pos) {
+	// Display the message box when a player inputs an invalid word
 	let squares = document.getElementsByClassName("letter");
 	for(let i = pos - 5; i < pos; i++) {
 		squares[i].style.borderWidth = "2px"
 	}
-	let messageBox = document.getElementById("alert");
+	let i = 1;
+	if (pos === 20) {
+		i = 0;
+	}
+	let messageBox = document.getElementsByClassName("alert")[i];
 	messageBox.style.backgroundColor = "red";
-	messageBox.style.opacity = 1;
+	messageBox.style.opacity = "1";
 	messageBox.textContent = "INVALID WORD";
 	messageBox.style.color = color2;
 	messageBox.style.fontWeight = "bold";
 	messageBox.style.fontSize = "24px";
+	messageBox.style.zIndex = "3";
 	setTimeout(function() {
 		for(let i = pos - 5; i < pos; i++) {
 			squares[i].style.borderWidth = "1px"
 		}
 	},100);
 	setTimeout(function() {
-		messageBox.style.opacity = 0;
+		messageBox.style.opacity = "0";
 	},1000);
 }
 
 function restartGame() {
+	// Clears the board, resets the variables, and 
 	clearBoard();
 	randomWordPromise = wordListPromise.then(data => {
 		let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
+		console.clear();
 		console.log(data[randomWordIndex]);
 		return data[randomWordIndex];
 	});
@@ -174,7 +187,7 @@ function clearBoard() {
 	minPos = pos;
 	maxPos = pos + 5;
 	gameWon = false;
-	document.getElementById("alert").style.opacity ="0";
+	document.getElementsByClassName("alert")[1].style.opacity ="0";
 }
 
 function openHelpScreen() {
@@ -360,6 +373,7 @@ function addToFriendWord(letter) {
 }
 
 function clearFriendWord() {
+	friendPos = 15; // Sets the "cursor" to the first square
 	let squares = document.getElementsByClassName("letter");
 	for (let i = 15; i < 20; i++) {
 		squares[i].textContent = "";
@@ -374,12 +388,14 @@ function submitFriendWord(word) {
 			clearBoard();
 			friendPos = 15;
 			closeFriendGuess();
+			console.clear();
 			console.log(word.toLowerCase());
 			return word.toLowerCase();
 		} else {
 			invalidWordStyle(friendPos);
 			clearBoard();
 			randomWordIndex = Math.floor(Math.random()*(data.length - 1));
+			console.clear();
 			console.log(data[randomWordIndex]);
 			return data[randomWordIndex];
 		}

@@ -175,12 +175,7 @@ function invalidWordStyle(pos) {
 function restartGame() {
 	// Clears the board, resets the variables, and 
 	clearBoard();
-	randomWordPromise = wordListPromise.then(data => {
-		let randomWordIndex = Math.floor(Math.random()*(data.length - 1));
-		console.clear();
-		console.log(data[randomWordIndex]);
-		return data[randomWordIndex];
-	});
+	randomWordPromise = getRandomWord(wordListRaw);
 }
 
 function clearBoard() {

@@ -161,3 +161,19 @@ p {
 	border-radius: 10px;
 	white-space: pre;
 }
+
+.option .tooltip {
+	visibility: hidden;
+	background-color: black;
+	color: white;
+	text-align: center;
+	padding: 5px;
+	width: 21px;
+	height: 21px;
+	border-radius: 6px;
+	position: absolute;
+}
+
+.option:hover .tooltip {
+	visibility: visible;
+}

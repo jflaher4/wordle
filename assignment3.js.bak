@@ -368,7 +368,7 @@ function keyPressed(key) {
 		} else if (key === 51) {
 			darkMode();
 		} else if (key === 52) {
-			if (helpScreen.style.height === "0%" && friendGuessScreen.style.height === "0%") {
+			if (document.getElementById("friendGuessScreen").style.height === "0%" && ) {
 				openFriendGuess();
 			} else {
 				closeFriendGuess();

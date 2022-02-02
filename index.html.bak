@@ -54,9 +54,9 @@
 							<p class="overlayText">The letter <b>H</b> is not in the word in any spot</p>
 						</div>
 						<div>
-							<p class="overlayText" style="font-size: 16px"><img src="./images/circleBack.png" id="overlayCircleBack" width="21px" height="21px" style="cursor: auto;"/>&nbsp;&nbsp;(1)&nbsp;Clear the board and start a new game.</p>
-							<p class="overlayText" style="font-size: 16px"><img src="./images/help.png" id="overlayHelp" width="21px" height="21px" style="cursor: auto;"/>&nbsp;&nbsp;(2)&nbsp;Open the help screen and see game instructions.</p>
-							<p class="overlayText" style="font-size: 16px"><img src="./images/friends.png" id="overlayFriends" width="30px" height="21px" style="cursor: auto;"/>&nbsp;(4)&nbsp;Choose a word and let your friend guess it.</p>
+							<p class="overlayText" style="font-size: 16px"><img src="./images/circleBack.png" id="overlayCircleBack" width="21px" height="21px" style="cursor: auto;"/>&nbsp;&nbsp;&nbsp;Clear the board and start a new game. (Shortcut 2)</p>
+							<p class="overlayText" style="font-size: 16px"><img src="./images/help.png" id="overlayHelp" width="21px" height="21px" style="cursor: auto;"/>&nbsp;&nbsp;&nbsp;Open the help screen and see game instructions.</p>
+							<p class="overlayText" style="font-size: 16px"><img src="./images/friends.png" id="overlayFriends" width="30px" height="21px" style="cursor: auto;"/>&nbsp;&nbsp;Choose a word and let your friend guess it.</p>
 						</div>						
 					</div>
 				</div>			

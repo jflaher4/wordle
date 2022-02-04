@@ -310,7 +310,6 @@ function createString(pos) {
 
 function keyPressed(key) {
 	
-	console.log(document.getElementById("helpScreen").style.height);
 	// Handles key events based on what key was pressed
 	if ((97 <= key && key <= 122) || (65 <= key && key <= 90)){ //a to z or A to Z
 		let letter = String.fromCharCode(key).toUpperCase();
